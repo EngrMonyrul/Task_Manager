@@ -12,4 +12,14 @@ class LoginProviderImpl extends LoginProvider {
     _rememberMe = remember;
     notifyListeners();
   }
+
+  @override
+  void setLogin({required String password, required String email}) {
+    _login ??= Login();
+    _login = _login!.copyWith(
+      email: email,
+      password: password,
+    );
+    notifyListeners();
+  }
 }
