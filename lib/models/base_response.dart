@@ -1,11 +1,13 @@
 class BaseResponse<T> {
-  bool? success;
+  String? status;
   T? data;
-  int? statusCode;
 
-  BaseResponse({this.success, this.data, this.statusCode});
+  BaseResponse({this.status, this.data});
 
   factory BaseResponse.fromJson(
-          Map<String, dynamic> json, T Function(String) fromJsonT) =>
-      BaseResponse();
+          Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
+      BaseResponse(
+        status: json["status"],
+        data: json["data"] != null ? fromJsonT(json["data"]) : null,
+      );
 }

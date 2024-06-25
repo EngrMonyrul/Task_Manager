@@ -1,8 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager/common/widgets/custom_background.dart';
 import 'package:task_manager/common/widgets/custom_button.dart';
@@ -34,8 +34,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void pressedOnLogin() {
+    final loginProvider = context.read<LoginProvider>();
     final formState = _formKey.currentState;
-    if (formState!.validate()) {}
+    if (formState!.validate()) {
+      if (loginProvider.login!.isValid) {}
+    }
   }
 
   @override
@@ -81,6 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       label: const Text(
                         "Username or Email",
                       ),
+                      onChanged: (value) {
+                        loginProvider.setLogin(email: value);
+                      },
                       keyboardType: TextInputType.emailAddress,
                       filledColor: theme.colorScheme.tertiary.withOpacity(0.1),
                       textStyle: theme.textTheme.bodyMedium?.copyWith(
@@ -102,6 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       label: const Text(
                         "Password",
                       ),
+                      onChanged: (value) {
+                        loginProvider.setLogin(password: value);
+                      },
                       filledColor: theme.colorScheme.tertiary.withOpacity(0.1),
                       obscureText: loginProvider.showPassword,
                       suffixIcon: IconButton(
@@ -220,6 +229,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: screenSize.height * .1,
+                    ),
+                    Text(
+                      ComponentsConst.appVersion,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onPrimary,
+                      ),
                     ),
                     SizedBox(
                       height: screenSize.height * .2,
