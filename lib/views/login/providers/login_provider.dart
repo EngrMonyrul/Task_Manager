@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:task_manager/models/base_response.dart';
 import 'package:task_manager/models/login/login.dart';
 import 'package:task_manager/models/login/login_response.dart';
 import 'package:task_manager/repository/login/login_repo.dart';
+import 'package:flutter/foundation.dart';
 
 part 'login_provider_impl.dart';
 

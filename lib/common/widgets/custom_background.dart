@@ -3,6 +3,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:task_manager/utils/constants/assets_const.dart';
 
+/// ### Custom Background
+/// __to set scaffold background__
+///
+/// __Requested Parameters__
+/// * [Widget] for [child]
+/// * [String] for [img]
+/// * [EdgeInsetsGeometry] for [padding]
+/// * [Color] for [color]
+///
+/// __Return__
+/// * [Container]
 class CustomBackground extends StatelessWidget {
   const CustomBackground({
     super.key,
@@ -12,6 +23,7 @@ class CustomBackground extends StatelessWidget {
     this.color,
   });
 
+  //----------> variables <----------//
   final Widget child;
   final String? img;
   final EdgeInsetsGeometry? padding;
@@ -21,6 +33,7 @@ class CustomBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: padding,
+      //----------> setting img for the background <----------//
       decoration: BoxDecoration(
         color: color,
         image: DecorationImage(
@@ -28,6 +41,7 @@ class CustomBackground extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
+      //----------> child <----------//
       child: BackdropFilter(
           filter: ImageFilter.blur(
             sigmaX: 5,

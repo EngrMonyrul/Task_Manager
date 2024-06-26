@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/utils/constants/sizes_const.dart';
 import 'package:task_manager/utils/extensions/context_ext.dart';
 
+/// ### Custom Button
+/// __custom button to handle all button actions with blink splash__
+///
+/// __Requested Parameters__
+/// * [double] for [height]
+/// * [double] for [width]
+/// * [Color] for [color]
+/// * [BorderRadius] for [borderRadius]
+/// * [VoidCallBack] for [onPressed]
+/// * [Widget] for [child]
+///
+/// __Return__
+/// * [Container]
 class CustomButton extends StatelessWidget {
   const CustomButton(
       {super.key,
@@ -12,6 +25,7 @@ class CustomButton extends StatelessWidget {
       this.onPressed,
       this.child});
 
+  //----------> variables <----------//
   final double? height;
   final double? width;
   final Color? color;
@@ -32,8 +46,10 @@ class CustomButton extends StatelessWidget {
         borderRadius:
             borderRadius ?? BorderRadius.circular(SizesConsts.defaultRadius),
       ),
+      //----------> material widget <----------//
       child: Material(
         type: MaterialType.transparency,
+        //----------> button <----------//
         child: InkWell(
           borderRadius:
               borderRadius ?? BorderRadius.circular(SizesConsts.defaultRadius),

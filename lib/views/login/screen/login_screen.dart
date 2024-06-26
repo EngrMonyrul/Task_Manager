@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_manager/common/providers/common_provider.dart';
 import 'package:task_manager/common/widgets/custom_background.dart';
 import 'package:task_manager/common/widgets/custom_button.dart';
 import 'package:task_manager/common/widgets/custom_text_form_field.dart';
@@ -33,11 +34,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void pressedOnLogin() {
+  void pressedOnLogin() async {
     final loginProvider = context.read<LoginProvider>();
+    final commonProvider = context.read<CommonProvider>();
     final formState = _formKey.currentState;
     if (formState!.validate()) {
-      if (loginProvider.login!.isValid) {}
+      if (loginProvider.login!.isValid) {
+        commonProvider.setLoading();
+        await loginProvider.loginIn();
+        commonProvider.setLoading();
+      }
     }
   }
 
@@ -50,8 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final screenSize = context.screenSize;
     final theme = context.theme;
-    return Consumer<LoginProvider>(
-      builder: (context, loginProvider, child) {
+    return Consumer2<LoginProvider, CommonProvider>(
+      builder: (context, loginProvider, commonProvider, child) {
         return CustomBackground(
           padding: const EdgeInsets.all(SizesConsts.defaultPadding),
           child: Scaffold(
@@ -144,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Checkbox(
                           side: BorderSide(color: theme.colorScheme.onPrimary),
                           checkColor: theme.colorScheme.primary,
-                          fillColor: MaterialStatePropertyAll(
+                          fillColor: WidgetStatePropertyAll(
                               theme.colorScheme.onPrimary),
                           value: loginProvider.rememberMe,
                           onChanged: (value) {
@@ -160,22 +166,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    CustomButton(
-                      onPressed: pressedOnLogin,
-                      child: SizedBox(
-                        height: screenSize.height * .06,
-                        width: screenSize.width,
-                        child: Center(
-                          child: Text(
-                            "LOGIN",
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onPrimary,
-                              fontWeight: FontWeight.bold,
+                    if (commonProvider.loading)
+                      const CircularProgressIndicator(),
+                    if (!commonProvider.loading)
+                      CustomButton(
+                        onPressed: pressedOnLogin,
+                        child: SizedBox(
+                          height: screenSize.height * .06,
+                          width: screenSize.width,
+                          child: Center(
+                            child: Text(
+                              "LOGIN",
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
                     SizedBox(
                       height: screenSize.height * .01,
                     ),

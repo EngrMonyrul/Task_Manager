@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:task_manager/data/network/network_client.dart';
 import 'package:task_manager/models/base_response.dart';
@@ -13,8 +16,18 @@ class NetworkClientImpl extends NetworkClient {
   @override
   Future<http.Response> loginSystem({required Login login}) async {
     final url = Uri.parse(HttpEndpoints.baseUrl + HttpEndpoints.login);
-    final bodyJson = jsonEncode(login);
-    final response = await _client.post(url, body: bodyJson);
+    late http.Response response;
+    log("Requested To: $url");
+    try {
+      response = await _client.post(url, body: login.toJson());
+    } on SocketException {
+      log("Socket Exception");
+    } on TimeoutException {
+      log("Timeout Exception");
+    } catch (e) {
+      log("Error: $e");
+    }
+    log("Response: ${response.body}");
     return response;
   }
 }
